@@ -2,9 +2,7 @@ const express = require('express');
 
 const app = express();
 
-//mongo pass - zysPz6ifrWXETmPV
 
-//aws pass -"26Tr*VZQFAhTS
 
 const studentRoute = require('./api/routes/student');
 const facultyRoute = require('./api/routes/faculty');
