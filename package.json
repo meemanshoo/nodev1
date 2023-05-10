@@ -1,0 +1,24 @@
+{
+  "name": "rest-shop",
+  "version": "1.0.0",
+  "description": "first node js rest api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node",
+    "rest",
+    "api"
+  ],
+  "author": "meem",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "mongodb": "^5.4.0",
+    "mongoose": "^7.1.0",
+    "nodemo": "^1.0.0",
+    "nodemon": "^2.0.22"
+  }
+}
