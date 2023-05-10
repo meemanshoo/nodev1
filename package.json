@@ -16,6 +16,7 @@
   "dependencies": {
     "body-parser": "^1.20.2",
     "express": "^4.18.2",
+    "firebase": "^9.21.0",
     "mongodb": "^5.4.0",
     "mongoose": "^7.1.0",
     "nodemo": "^1.0.0",
