@@ -29,7 +29,7 @@ router.get('/:id',(req,res,next) => {
         });
     });
 });
-
+//
 router.post('/',(req,res,next) => {
 
     const student = new Student({
