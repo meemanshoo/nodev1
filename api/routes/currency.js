@@ -23,6 +23,53 @@ router.get('/',(req,res,next) => {
 });
 
 
+router.post('/getBySymbol',(req,res,next) => {
+try {
+      if(!req.body.coinSymbol){
+            return res.status(400).json({   status:false, error: 'coinSymbol must be provided' });
+        }
+
+        else if(typeof req.body.coinSymbol !== 'string'){
+            return res.status(400).json({   status:false, error: 'coinSymbol must be string' });
+        }
+
+        const  expectedKeys = ["coinSymbol"];
+           // Check for extra fields
+        const extraFields = Object.keys(req.body).filter(key => !expectedKeys.includes(key));
+
+         
+      if (extraFields.length > 0) {
+        return res.status(400).json({   status:false, error: 'Invalid fields: ' + extraFields.join(', ') });
+      }
+
+        // Build the query dynamically based on the column and value
+  const query = {};
+  query["coinSymbol"] = req.body.coinSymbol;
+
+  Currency.find(query)
+  .then(data => {
+    const length = data.length;
+    if(length > 0){
+        res.status(200).json({ status:true,  data });
+    }
+    else{
+        res.status(400).json({ status:false,  error: 'Failed to search data', data: error });
+    }
+
+  })
+  .catch(error => {
+    res.status(400).json({ status:false,  error: 'Failed to search data', data: error });
+  });
+      
+} catch (err) {
+    res.status(400).json({
+        status:false,
+        error:err
+    });
+}
+
+});
+
 router.post('/',(req,res,next) => {
 
     try {
@@ -36,9 +83,7 @@ router.post('/',(req,res,next) => {
         else if(!req.body.coinImage){
             return res.status(400).json({   status:false, error: 'coinImage must be provided' }); 
         }
-        // else if(!req.body.coinSymbol){
-        //     return res.status(400).json({   status:false, error: 'coinSymbol must be provided' });
-        // }
+       
         else if(!req.body.coinDecimalCurrency){
             return res.status(400).json({   status:false, error: 'coinDecimalCurrency must be provided' });
         }
@@ -48,7 +93,12 @@ router.post('/',(req,res,next) => {
         else if(!req.body.coinDecimalPair){
             return res.status(400).json({   status:false, error: 'coinDecimalPair must be provided' });
         }
-
+        else if(!req.body.geckoVs_currency){
+            return res.status(400).json({   status:false, error: 'geckoVs_currency must be provided' });
+        }
+        else if(!req.body.geckoIds){
+            return res.status(400).json({   status:false, error: 'geckoIds must be provided' });
+        }
 
 
         else if(typeof req.body.coinName !== 'string'){
@@ -75,9 +125,15 @@ router.post('/',(req,res,next) => {
         else if(typeof req.body.coinDecimalPair !== 'string'){
             return res.status(400).json({   status:false, error: 'coinDecimalPair must be string' });
         }
+        else if(typeof req.body.geckoVs_currency !== 'string'){
+            return res.status(400).json({   status:false, error: 'geckoVs_currency must be string' });
+        }
+        else if(typeof req.body.geckoIds !== 'string'){
+            return res.status(400).json({   status:false, error: 'geckoIds must be string' });
+        }
 
       const  expectedKeys = ["coinName","coinImage","coinShortName","coinSymbol","coinPairWith","coinDecimalCurrency",
-      "coinListed", "coinDecimalPair"];
+      "coinListed", "coinDecimalPair","geckoVs_currency","geckoIds"];
          // Check for extra fields
       const extraFields = Object.keys(req.body).filter(key => !expectedKeys.includes(key));
     
@@ -104,6 +160,8 @@ router.post('/',(req,res,next) => {
             coinDecimalCurrency: req.body.coinDecimalCurrency,
             coinListed:req.body.coinListed,
             coinDecimalPair: req.body.coinDecimalPair,
+            geckoVs_currency: req.body.geckoVs_currency,
+            geckoIds: req.body.geckoIds,
         });
 
         currency.save().then(

@@ -9,7 +9,9 @@ const currencySchema = new mongoose.Schema({
     coinPairWith: String,
     coinDecimalCurrency: String,
     coinListed: Boolean,
-    coinDecimalPair: String
+    coinDecimalPair: String,
+    geckoVs_currency: String,
+    geckoIds: String
 });
 
 module.exports = mongoose.model('Currency',currencySchema);
