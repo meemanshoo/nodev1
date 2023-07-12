@@ -33,6 +33,9 @@ router.post('/',(req,res,next) => {
         else if(!req.body.coinShortName){
             return res.status(400).json({   status:false, error: 'coinShortName must be provided' }); 
         }
+        else if(!req.body.coinImage){
+            return res.status(400).json({   status:false, error: 'coinImage must be provided' }); 
+        }
         // else if(!req.body.coinSymbol){
         //     return res.status(400).json({   status:false, error: 'coinSymbol must be provided' });
         // }
@@ -50,6 +53,9 @@ router.post('/',(req,res,next) => {
 
         else if(typeof req.body.coinName !== 'string'){
             return res.status(400).json({   status:false, error: 'coinName must be string' });
+        }
+        else if(typeof req.body.coinImage !== 'string'){
+            return res.status(400).json({   status:false, error: 'coinImage must be string' });
         }
         else if(typeof req.body.coinShortName !== 'string'){
             return res.status(400).json({   status:false, error: 'coinShortName must be string' });
@@ -70,7 +76,7 @@ router.post('/',(req,res,next) => {
             return res.status(400).json({   status:false, error: 'coinDecimalPair must be string' });
         }
 
-      const  expectedKeys = ["coinName","coinShortName","coinSymbol","coinPairWith","coinDecimalCurrency",
+      const  expectedKeys = ["coinName","coinImage","coinShortName","coinSymbol","coinPairWith","coinDecimalCurrency",
       "coinListed", "coinDecimalPair"];
          // Check for extra fields
       const extraFields = Object.keys(req.body).filter(key => !expectedKeys.includes(key));
@@ -91,6 +97,7 @@ router.post('/',(req,res,next) => {
         const currency = new Currency({
             _id:new mongoose.Types.ObjectId,
             coinName:req.body.coinName,
+            coinImage:req.body.coinImage,
             coinShortName: req.body.coinShortName,
             coinSymbol:req.body.coinSymbol,
             coinPairWith: req.body.coinPairWith || 'USDT',
