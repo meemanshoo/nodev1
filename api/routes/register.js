@@ -59,29 +59,43 @@ router.post('/',(req,res,next) => {
     }
 
     try{
-            const register = new Register({
-                _id:new mongoose.Types.ObjectId,
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                userName: req.body.userName,
-                gmail: req.body.gmail,
-                phoneNo: req.body.phoneNo,
-                passsword: req.body.passsword 
-            });
-            
-            register.save().then(
-                result =>{
-                res.status(200).json({
-                    status:true,
-                    msg: result.gmail + " Register Successfully" 
-                })
-                }
-            ).catch(err => {
-                res.status(500).json({
-                    status:false,
-                    msg:err
-                })
-            });
+
+        Register.findOne({ gmail : req.body.gmail })
+        .then(existingGmail => {
+
+        if (existingGmail) {
+            return res.status(400).json({ status:false, error: 'Gmail already exists' });
+          }
+
+
+          const register = new Register({
+            _id:new mongoose.Types.ObjectId,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            userName: req.body.userName,
+            gmail: req.body.gmail,
+            phoneNo: req.body.phoneNo,
+            passsword: req.body.passsword 
+        });
+        
+        register.save().then(
+            result =>{
+            res.status(200).json({
+                status:true,
+                msg: result.gmail + " Register Successfully" 
+            })
+            }
+        ).catch(err => {
+            res.status(500).json({
+                status:false,
+                msg:err
+            })
+        });
+
+        })
+        .catch(error => {
+          res.status(400).json({ status:false, error: 'Failed to check currency existence', details: error });
+        });
         
 
     } catch (err) {
