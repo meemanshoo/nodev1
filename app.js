@@ -6,6 +6,7 @@ const app = express();
 
 const studentRoute = require('./api/routes/student');
 const currencyRoute = require('./api/routes/currency');
+const registerRoute = require('./api/routes/register');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
@@ -24,6 +25,7 @@ app.use(bodyParser.json());
 
 app.use('/student',studentRoute);
 app.use('/currency',currencyRoute);
+app.use('/register',registerRoute);
 
 // app.use((req,res,next) => {
 //     res.status(404).json({
