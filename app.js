@@ -1,4 +1,6 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
 
 const app = express();
 
@@ -26,6 +28,28 @@ app.use(bodyParser.json());
 app.use('/student',studentRoute);
 app.use('/currency',currencyRoute);
 app.use('/register',registerRoute);
+
+
+
+// Define Swagger options
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0', // Specify the version of OpenAPI (Swagger) you are using
+    info: {
+      title: 'Your API Documentation', // Title of your API
+      version: '1.0.0', // Version of your API
+      description: 'Documentation for your API',
+    },
+  },
+  // Paths to API docs and your API endpoints
+  apis: ['./api/routes/*.js'],
+};
+
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
+
+  // Serve Swagger documentation using Swagger UI
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 // app.use((req,res,next) => {
 //     res.status(404).json({

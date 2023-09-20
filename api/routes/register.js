@@ -2,9 +2,19 @@ const express = require('express');
 const router = express.Router();
 const Register = require('../model/register');
 const mongoose = require('mongoose');
+const swaggerUi = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
 
-
-// save data to db
+/**
+ * @swagger
+ * /register:
+ *   post:
+ *     summary: Get a list of users
+ *     description: Retrieve a list of all users.
+ *     responses:
+ *       '200':
+ *         description: A successful response
+ */
 router.post('/',(req,res,next) => {
 
 
