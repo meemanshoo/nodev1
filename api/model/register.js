@@ -7,7 +7,7 @@ const registerSchema = new mongoose.Schema({
     userName: String,
     gmail: String,
     phoneNo: String,
-    passsword: String,
+    password: String,
 });
 
 module.exports = mongoose.model('Register',registerSchema);

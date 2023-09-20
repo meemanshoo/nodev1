@@ -9,12 +9,43 @@ const swaggerJSDoc = require('swagger-jsdoc');
  * @swagger
  * /register:
  *   post:
- *     summary: Get a list of users
- *     description: Retrieve a list of all users.
+ *     summary: For Register User
+ *     description: Add User Data to db.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               firstName:
+ *                 type: string
+ *                 description: The firstName of the user.
+ *               lastName:
+ *                 type: string
+ *                 format: email
+ *                 description: The lastName address of the user.
+ *               userName:
+ *                 type: string
+ *                 format: password
+ *                 description: The userName of the user.
+ *               gmail:
+ *                 type: string
+ *                 format: password
+ *                 description: The gmail of the user.
+ *               phoneNo:
+ *                 type: string
+ *                 format: password
+ *                 description: The phoneNo of the user.
+ *               password:
+ *                 type: string
+ *                 format: password
+ *                 description: The password of the user.
  *     responses:
  *       '200':
  *         description: A successful response
  */
+
 router.post('/',(req,res,next) => {
 
 
@@ -33,8 +64,8 @@ router.post('/',(req,res,next) => {
     else if(!req.body.phoneNo){
         return res.status(400).json({   status:false, error: 'phoneNo must be provided' }); 
     }
-    else if(!req.body.passsword){
-        return res.status(400).json({   status:false, error: 'passsword must be provided' }); 
+    else if(!req.body.password){
+        return res.status(400).json({   status:false, error: 'password must be provided' }); 
     }
 
     else if(typeof req.body.firstName !== 'string'){
@@ -52,11 +83,11 @@ router.post('/',(req,res,next) => {
     else if(typeof req.body.phoneNo !== 'string'){
         return res.status(400).json({   status:false, error: 'phoneNo must be string' });
     }
-    else if(typeof req.body.passsword !== 'string'){
-        return res.status(400).json({   status:false, error: 'passsword must be string' });
+    else if(typeof req.body.password !== 'string'){
+        return res.status(400).json({   status:false, error: 'password must be string' });
     }
 
-    const  expectedKeys = ["firstName","lastName","userName","gmail","phoneNo","passsword"];
+    const  expectedKeys = ["firstName","lastName","userName","gmail","phoneNo","password"];
     // Check for extra fields
     const extraFields = Object.keys(req.body).filter(key => !expectedKeys.includes(key));
 
@@ -85,7 +116,7 @@ router.post('/',(req,res,next) => {
             userName: req.body.userName,
             gmail: req.body.gmail,
             phoneNo: req.body.phoneNo,
-            passsword: req.body.passsword 
+            password: req.body.password 
         });
         
         register.save().then(
