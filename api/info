@@ -1,0 +1,145 @@
+// Primitive Types:
+
+//
+// properties:
+//   id:
+//     type: integer
+//   name:
+//     type: string
+//   is_active:
+//     type: boolean
+//   amount:
+//     type: number
+
+
+
+
+// Arrays:
+
+// properties:
+//   items:
+//     type: array
+//     items:
+//       type: string
+
+
+
+
+// Objects:
+
+// properties:
+//   user:
+//     type: object
+//     properties:
+//       id:
+//         type: integer
+//       name:
+//         type: string
+
+
+
+// Nested Objects:
+
+// properties:
+//   order:
+//     type: object
+//     properties:
+//       id:
+//         type: integer
+//       amount:
+//         type: number
+
+
+
+// Enum (Restricted Set of Values):
+
+// properties:
+//   status:
+//     type: string
+//     enum:
+//       - pending
+//       - approved
+//       - rejected
+
+
+
+// Date and Time Formats:
+
+// properties:
+//   created_at:
+//     type: string
+//     format: date-time  # Format for date and time
+
+
+
+// Custom Formats:
+
+// properties:
+//   custom_field:
+//     type: string
+//     format: custom  # Your custom format
+
+
+
+
+
+// Using oneOf, anyOf, or allOf for Union Types:
+
+// properties:
+//   result:
+//     oneOf:
+//       - type: string
+//       - type: integer
+
+
+
+
+
+// Required Properties:
+
+// properties:
+//   username:
+//     type: string
+//   password:
+//     type: string
+// required:
+//   - username
+//   - password
+
+
+
+
+
+// Nullable Properties:
+
+// properties:
+//   email:
+//     type: string
+//     nullable: true
+
+
+
+
+// Complex Example:
+
+// properties:
+//   id:
+//     type: integer
+//     description: The unique identifier for the resource.
+//   name:
+//     type: string
+//     description: The name of the resource.
+//   tags:
+//     type: array
+//     items:
+//       type: string
+//     description: Tags associated with the resource.
+//   details:
+//     type: object
+//     properties:
+//       description:
+//         type: string
+//         description: Detailed description of the resource.
+//       quantity:
+//         type: integer
+//         description: Quantity of the resource.

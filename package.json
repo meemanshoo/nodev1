@@ -19,8 +19,10 @@
     "firebase": "^9.21.0",
     "mongodb": "^5.4.0",
     "mongoose": "^7.1.0",
+    "nodemailer": "^6.9.5",
     "nodemo": "^1.0.0",
     "nodemon": "^2.0.22",
+    "otp-generator": "^4.0.1",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"
   }

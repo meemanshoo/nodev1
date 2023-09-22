@@ -3,6 +3,7 @@ const router = express.Router();
 const Student = require('../model/student');
 const mongoose = require('mongoose');
 
+
 router.get('/',(req,res,next) => {
     Student.find().then(result => {
         res.status(200).json({

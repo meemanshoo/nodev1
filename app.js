@@ -9,6 +9,10 @@ const app = express();
 const studentRoute = require('./api/routes/student');
 const currencyRoute = require('./api/routes/currency');
 const registerRoute = require('./api/routes/register');
+const loginRoute = require('./api/routes/login');
+const sendemailotpRoute = require('./api/routes/sendemailotp');
+const changepasswordRoute = require('./api/routes/changepassword');
+const categoryRoute = require('./api/routes/category');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
@@ -25,10 +29,13 @@ mongoose.connection.on('connected',connected => {
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-app.use('/student',studentRoute);
-app.use('/currency',currencyRoute);
-app.use('/register',registerRoute);
-
+app.use('/api/student',studentRoute);
+app.use('/api/currency',currencyRoute);
+app.use('/api/register',registerRoute);
+app.use('/api/login',loginRoute);
+app.use('/api/sendemailotp',sendemailotpRoute);
+app.use('/api/changepassword',changepasswordRoute);
+app.use('/api/category',categoryRoute);
 
 
 // Define Swagger options
@@ -51,11 +58,11 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions);
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
-// app.use((req,res,next) => {
-//     res.status(404).json({
-//         error:"bad request"
-//     });
-// });
+app.use((req,res,next) => {
+    res.status(404).json({
+        error:"bad request"
+    });
+});
 
 app.use((err, req, res, next) => {
     if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {

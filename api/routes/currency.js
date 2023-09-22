@@ -3,6 +3,8 @@ const router = express.Router();
 const Currency = require('../model/currency');
 const mongoose = require('mongoose');
 
+
+
 router.get('/',(req,res,next) => {
     Currency.find().then(result => {
         res.status(200).json({

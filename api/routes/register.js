@@ -2,12 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Register = require('../model/register');
 const mongoose = require('mongoose');
-const swaggerUi = require('swagger-ui-express');
-const swaggerJSDoc = require('swagger-jsdoc');
 
 /**
  * @swagger
- * /register:
+ * /api/register:
  *   post:
  *     summary: For Register User
  *     description: Add User Data to db.
@@ -20,22 +18,22 @@ const swaggerJSDoc = require('swagger-jsdoc');
  *             properties:
  *               firstName:
  *                 type: string
- *                 description: The firstName of the user.
+ *                 description: The firstName of the user.      
  *               lastName:
  *                 type: string
- *                 format: email
+ *                 format: string
  *                 description: The lastName address of the user.
  *               userName:
  *                 type: string
- *                 format: password
+ *                 format: string
  *                 description: The userName of the user.
  *               gmail:
  *                 type: string
- *                 format: password
+ *                 format: email
  *                 description: The gmail of the user.
  *               phoneNo:
  *                 type: string
- *                 format: password
+ *                 format: number
  *                 description: The phoneNo of the user.
  *               password:
  *                 type: string
@@ -43,48 +41,48 @@ const swaggerJSDoc = require('swagger-jsdoc');
  *                 description: The password of the user.
  *     responses:
  *       '200':
- *         description: A successful response
+ *         description: Register successful response
  */
 
 router.post('/',(req,res,next) => {
 
 
     if (!req.body.firstName){
-        return res.status(400).json({   status:false, error: 'firstName must be provided' });
+        return res.status(300).json({   status:false, message: 'firstName must be provided' });
     } 
     else if(!req.body.lastName){
-        return res.status(400).json({   status:false, error: 'lastName must be provided' }); 
+        return res.status(300).json({   status:false, message: 'lastName must be provided' }); 
     }
     else if(!req.body.userName){
-        return res.status(400).json({   status:false, error: 'userName must be provided' }); 
+        return res.status(300).json({   status:false, message: 'userName must be provided' }); 
     }
     else if(!req.body.gmail){
-        return res.status(400).json({   status:false, error: 'gmail must be provided' }); 
+        return res.status(300).json({   status:false, message: 'gmail must be provided' }); 
     }
     else if(!req.body.phoneNo){
-        return res.status(400).json({   status:false, error: 'phoneNo must be provided' }); 
+        return res.status(300).json({   status:false, message: 'phoneNo must be provided' }); 
     }
     else if(!req.body.password){
-        return res.status(400).json({   status:false, error: 'password must be provided' }); 
+        return res.status(300).json({   status:false, message: 'password must be provided' }); 
     }
 
     else if(typeof req.body.firstName !== 'string'){
-        return res.status(400).json({   status:false, error: 'firstName must be string' });
+        return res.status(300).json({   status:false, message: 'firstName must be string' });
     }
     else if(typeof req.body.lastName !== 'string'){
-        return res.status(400).json({   status:false, error: 'lastName must be string' });
+        return res.status(300).json({   status:false, message: 'lastName must be string' });
     }
     else if(typeof req.body.userName !== 'string'){
-        return res.status(400).json({   status:false, error: 'userName must be string' });
+        return res.status(300).json({   status:false, message: 'userName must be string' });
     }
     else if(typeof req.body.gmail !== 'string'){
-        return res.status(400).json({   status:false, error: 'gmail must be string' });
+        return res.status(300).json({   status:false, message: 'gmail must be string' });
     }
     else if(typeof req.body.phoneNo !== 'string'){
-        return res.status(400).json({   status:false, error: 'phoneNo must be string' });
+        return res.status(300).json({   status:false, message: 'phoneNo must be string' });
     }
     else if(typeof req.body.password !== 'string'){
-        return res.status(400).json({   status:false, error: 'password must be string' });
+        return res.status(300).json({   status:false, message: 'password must be string' });
     }
 
     const  expectedKeys = ["firstName","lastName","userName","gmail","phoneNo","password"];
@@ -93,7 +91,7 @@ router.post('/',(req,res,next) => {
 
 
     if (extraFields.length > 0) {
-        return res.status(500).json({
+        return res.status(300).json({
             status:false,
             msg: 'Invalid fields: ' + extraFields.join(', ') 
         });
@@ -105,44 +103,57 @@ router.post('/',(req,res,next) => {
         .then(existingGmail => {
 
         if (existingGmail) {
-            return res.status(400).json({ status:false, error: 'Gmail already exists' });
+            return res.status(400).json({ status:false, message: 'Gmail already exists' });
           }
 
+         const userId = new mongoose.Types.ObjectId;
 
           const register = new Register({
             _id:new mongoose.Types.ObjectId,
+            userId:userId,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
             userName: req.body.userName,
             gmail: req.body.gmail,
             phoneNo: req.body.phoneNo,
-            password: req.body.password 
+            password: req.body.password,
         });
         
         register.save().then(
             result =>{
             res.status(200).json({
                 status:true,
-                msg: result.gmail + " Register Successfully" 
+                msg: result.gmail + " Register Successfully",
+                data:[
+                    {
+                        userId: userId 
+                    }
+                ]
             })
             }
         ).catch(err => {
             res.status(500).json({
                 status:false,
-                msg:err
+                message: 'Failed to register user', 
+                error: err 
             })
         });
 
         })
         .catch(error => {
-          res.status(400).json({ status:false, error: 'Failed to check currency existence', details: error });
+          res.status(500).json({ 
+            status:false, 
+            message: 'Failed to check gmail existence', 
+            error: error 
+        });
         });
         
 
     } catch (err) {
         res.status(500).json({
             status:false,
-            msg:err
+            message: 'Something went wrong', 
+            error:err
         });
     }
 
