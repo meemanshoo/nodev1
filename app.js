@@ -13,6 +13,8 @@ const loginRoute = require('./api/routes/login');
 const sendemailotpRoute = require('./api/routes/sendemailotp');
 const changepasswordRoute = require('./api/routes/changepassword');
 const categoryRoute = require('./api/routes/category');
+const usernameisuniqueRoute = require('./api/routes/usernameisunique');
+
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
@@ -36,7 +38,7 @@ app.use('/api/login',loginRoute);
 app.use('/api/sendemailotp',sendemailotpRoute);
 app.use('/api/changepassword',changepasswordRoute);
 app.use('/api/category',categoryRoute);
-
+app.use('/api/usernameisunique',usernameisuniqueRoute);
 
 // Define Swagger options
 const swaggerOptions = {

@@ -100,44 +100,59 @@ router.post('/',(req,res,next) => {
     try{
 
         Register.findOne({ gmail : req.body.gmail })
-        .then(existingGmail => {
+        .then(data => {
+    
+        if (data) {
+            return res.status(400).json({ status:false, message: 'Gmail already exists'});
+        }
 
-        if (existingGmail) {
-            return res.status(400).json({ status:false, message: 'Gmail already exists' });
-          }
+        Register.findOne({ userName : req.body.userName })
+        .then(data => {
+            if (data) {
+                return res.status(400).json({ status:false, message: 'UserName must be unique' });
+            } 
 
+            
          const userId = new mongoose.Types.ObjectId;
 
-          const register = new Register({
-            _id:new mongoose.Types.ObjectId,
-            userId:userId,
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            userName: req.body.userName,
-            gmail: req.body.gmail,
-            phoneNo: req.body.phoneNo,
-            password: req.body.password,
-        });
-        
-        register.save().then(
-            result =>{
-            res.status(200).json({
-                status:true,
-                msg: result.gmail + " Register Successfully",
-                data:[
-                    {
-                        userId: userId 
-                    }
-                ]
-            })
-            }
-        ).catch(err => {
-            res.status(500).json({
-                status:false,
-                message: 'Failed to register user', 
-                error: err 
-            })
-        });
+         const register = new Register({
+           _id:new mongoose.Types.ObjectId,
+           userId:userId,
+           firstName: req.body.firstName,
+           lastName: req.body.lastName,
+           userName: req.body.userName,
+           gmail: req.body.gmail,
+           phoneNo: req.body.phoneNo,
+           password: req.body.password,
+       });
+       
+       register.save().then(
+           result =>{
+           res.status(200).json({
+               status:true,
+               msg: result.gmail + " Register Successfully",
+               data:[
+                   {
+                       userId: userId 
+                   }
+               ]
+           })
+           }
+       ).catch(err => {
+           res.status(500).json({
+               status:false,
+               message: 'Failed to register user', 
+               error: err 
+           })
+       });
+        }).catch(error => {
+            res.status(500).json({ 
+              status:false, 
+              message: 'Failed to check userName existence', 
+              error: error 
+          });
+          });
+
 
         })
         .catch(error => {
