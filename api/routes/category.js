@@ -9,8 +9,10 @@ const swaggerUi = require('swagger-ui-express');
  * @swagger
  * /api/category:
  *   get:
+ *     tags:
+ *     - Category
  *     summary: get all category
- *     description: get all category.
+ *     description: https://long-boa-sombrero.cyclic.app/api/category
  *     responses:
  *       '200':
  *         description: get all category successful

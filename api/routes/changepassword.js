@@ -10,8 +10,10 @@ const swaggerUi = require('swagger-ui-express');
  * @swagger
  * /api/changepassword:
  *   patch:
+ *     tags:
+ *     - Authentication
  *     summary: For changing User password
- *     description: For changing User password.
+ *     description: https://long-boa-sombrero.cyclic.app/api/changepassword
  *     requestBody:
  *       required: true
  *       content:

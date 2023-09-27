@@ -10,8 +10,10 @@ const swaggerUi = require('swagger-ui-express');
  * @swagger
  * /api/login:
  *   post:
+ *     tags:
+ *     - Authentication
  *     summary: For Login User
- *     description: Get User Data to db.
+ *     description: https://long-boa-sombrero.cyclic.app/api/login
  *     requestBody:
  *       required: true
  *       content:

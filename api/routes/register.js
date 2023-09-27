@@ -7,8 +7,10 @@ const mongoose = require('mongoose');
  * @swagger
  * /api/register:
  *   post:
+ *     tags:
+ *     - Authentication
  *     summary: For Register User
- *     description: Add User Data to db.
+ *     description: https://long-boa-sombrero.cyclic.app/api/register
  *     requestBody:
  *       required: true
  *       content:

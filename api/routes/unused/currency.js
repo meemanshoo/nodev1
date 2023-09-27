@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Currency = require('../model/currency');
+const Currency = require('../../model/currency');
 const mongoose = require('mongoose');
 
 
