@@ -17,9 +17,11 @@ const changepasswordRoute = require('./api/routes/changepassword');
 const categoryRoute = require('./api/routes/category');
 const validateOtpRoute = require('./api/routes/validateotp');
 
+
 //admin
 const clearStoredOtps = require('./api/routes/admin/clearstoredotps');
 const users = require('./api/routes/admin/users');
+const changeacticvation = require('./api/routes/admin/changeacticvation');
 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -47,6 +49,7 @@ app.use('/api/category',categoryRoute);
 app.use('/api/validateotp',validateOtpRoute);
 app.use('/api/clearstoredotps',clearStoredOtps);
 app.use('/api/users',users);
+app.use('/api/changeacticvation',changeacticvation);
 
 
 // Define Swagger options

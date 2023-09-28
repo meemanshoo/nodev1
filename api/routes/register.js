@@ -126,6 +126,7 @@ router.post('/',(req,res,next) => {
            gmail: req.body.gmail,
            phoneNo: req.body.phoneNo,
            password: req.body.password,
+           isActivated: true
        });
        
        register.save().then(

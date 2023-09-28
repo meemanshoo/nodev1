@@ -21,10 +21,10 @@ const swaggerUi = require('swagger-ui-express');
  *           schema:
  *             type: object
  *             properties:  
- *               userName:
+ *               userNameOrGmail:
  *                 type: string
- *                 format: password
- *                 description: The userName of the user.      
+ *                 format: string
+ *                 description: The userName/gmail of the user.      
  *               password:
  *                 type: string
  *                 format: password
@@ -37,21 +37,21 @@ const swaggerUi = require('swagger-ui-express');
 
 router.post('/',(req,res,next) => {
 
-    if(!req.body.userName){
-        return res.status(300).json({   status:false, message: 'userName must be provided' }); 
+    if(!req.body.userNameOrGmail){
+        return res.status(300).json({   status:false, message: 'userNameOrGmail must be provided' }); 
     }
     else if(!req.body.password){
         return res.status(300).json({   status:false, message: 'password must be provided' }); 
     }
 
-    else if(typeof req.body.userName !== 'string'){
-        return res.status(300).json({   status:false, message: 'userName must be string' });
+    else if(typeof req.body.userNameOrGmail !== 'string'){
+        return res.status(300).json({   status:false, message: 'userNameOrGmail must be string' });
     }
     else if(typeof req.body.password !== 'string'){
         return res.status(300).json({   status:false, message: 'password must be string' });
     }
 
-    const  expectedKeys = ["userName","password"];
+    const  expectedKeys = ["userNameOrGmail","password"];
     // Check for extra fields
     const extraFields = Object.keys(req.body).filter(key => !expectedKeys.includes(key));
 
@@ -64,18 +64,25 @@ router.post('/',(req,res,next) => {
     }
 
     try{
+        let  reqJson = {};
+        if(req.body.userNameOrGmail.endsWith("@gmail.com")){
+            reqJson = { gmail : req.body.userNameOrGmail }
+        }
+        else{
+            reqJson = { userName : req.body.userNameOrGmail }
+        }
 
-        Register.findOne({ userName : req.body.userName })
-        .then(existingUserName => {
+        Register.findOne(reqJson)
+        .then(existingUser => {
 
-        if (existingUserName) {
-            if(existingUserName["password"] == req.body.password){
+        if (existingUser) {
+            if(existingUser["password"] == req.body.password){
                 return res.status(200).json({
                     status:true,
                     message: 'Login Successfull',
                     data:[
                         {
-                            userId: existingUserName["userId"]
+                            userId: existingUser["userId"]
                         }
                     ]
                     
@@ -84,7 +91,7 @@ router.post('/',(req,res,next) => {
             else{
                 return res.status(400).json({
                     status:false,
-                    message: 'Login Unsuccessfull. Please Check email or password carefully',
+                    message: 'Login Unsuccessfull. Please password carefully',
                 });
             }
            
@@ -92,7 +99,7 @@ router.post('/',(req,res,next) => {
           else{
             return res.status(400).json({
                 status:false,
-                message: 'Login Unsuccessfull. Please Check email or password carefully',
+                message: 'Login Unsuccessfull. Please Check gmail/userName or password carefully',
             });
           }
 

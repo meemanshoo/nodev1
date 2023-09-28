@@ -2,40 +2,33 @@ const express = require('express');
 const router = express.Router();
 const Register = require('../../model/register');
 const ValidateAdmin = require('../admin/validateadmin');
-const crypto = require('crypto');
+
 
 /**
  * @swagger
- * /api/category:
+ * /api/users:
  *   post:
  *     tags:
  *     - Admin
  *     summary: get all Users
  *     description: https://long-boa-sombrero.cyclic.app/api/users
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:  
- *               adminUserName:
- *                 type: string
- *                 format: gmail
- *                 description: The gmail of the user.      
- *               adminPassword:
- *                 type: string
- *                 format: otp
- *                 description: The otp of the user.   
+ *     parameters:
+ *       - in: header
+ *         name: keys
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: string
+ *         description: keys is SHA-256 hash of body parameter of clearstoredotps api
  *     responses:
  *       '200':
- *         description: Register successful response
+ *         description: Successful response
  */
 
 
 router.post('/',(req,res,next) => {
 
-    const respp = ValidateAdmin.validateotp(req,res);
+    const respp = ValidateAdmin.validateAdminWithSha256(req,res);
    
     if(respp){
         return res.status(300).json({   status:false, message: respp }); 
@@ -68,27 +61,5 @@ router.post('/',(req,res,next) => {
     }
     }});
 
-// Define a route that accepts headers
-router.get('/', (req, res) => {
-    // Get headers from the request object
-    const receivedHash  = `{"adminUserName": "meem","adminPassword": "123456"}`;
-
-
-
-    // Hash the known value using SHA-256
-const hash = crypto.createHash('sha256').update(receivedHash).digest('hex');
-
-if(hash === req.headers.keys.toLowerCase()){
-  // Respond with the received headers
-  res.json({ "true":hash});
-}
-else{
-  // Respond with the received headers
-  res.json({ "false":hash});
-}
-
-  
-  
-  });
 
 module.exports = router;

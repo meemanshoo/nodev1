@@ -3,7 +3,7 @@ const router = express.Router();
 const Category = require('../model/category');
 const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
-
+const ValidateAdmin = require('../routes/admin/validateadmin');
 
 /**
  * @swagger
@@ -42,8 +42,45 @@ router.get('/',(req,res,next) => {
 });
 
 
+/**
+ * @swagger
+ * /api/category:
+ *   post:
+ *     tags:
+ *     - Admin
+ *     summary: Add category
+ *     description: https://long-boa-sombrero.cyclic.app/api/category
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               categoryImage:
+ *                 type: string
+ *                 description: The categoryImage of the Category.      
+ *               categoryName:
+ *                 type: string
+ *                 format: string
+ *                 description: The categoryName of the Category.           
+ *     parameters:
+ *       - in: header
+ *         name: keys
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: string
+ *         description: keys is SHA-256 hash of body parameter of clearstoredotps api
+ *     responses:
+ *       '200':
+ *         description: get all category successful
+ */
+
 router.post('/',(req,res,next) => {
 
+    const respp = ValidateAdmin.validateAdminWithSha256(req,res);
+   
 
     if (!req.body.categoryImage){
         return res.status(300).json({   status:false, message: 'categoryImage must be provided' });
@@ -72,6 +109,11 @@ router.post('/',(req,res,next) => {
         });
     }
 
+    if(respp){
+        return res.status(300).json({   status:false, message: respp }); 
+    }
+    else{
+ 
     try{
         const categoryId = new mongoose.Types.ObjectId;
 
@@ -107,6 +149,8 @@ router.post('/',(req,res,next) => {
             message: 'Something went wrong', 
             error:err
         });
+    }
+
     }
 
     

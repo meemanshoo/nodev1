@@ -1,3 +1,5 @@
+const crypto = require('crypto');
+
 function validateotp(req,res){
     if(!req.body.adminUserName){
         return 'adminUserName must be provided'; 
@@ -35,8 +37,36 @@ function validateotp(req,res){
    
 }
 
+function validateAdminWithSha256(req,res){
+
+
+    if(!req.headers.keys){
+        return 'keys must be provided in Header'; 
+    }
+
+        // Get headers from the request object
+        const receivedHash  = `{"adminUserName": "meem","adminPassword": "123456"}`;
+
+
+
+        // Hash the known value using SHA-256
+    const hash = crypto.createHash('sha256').update(receivedHash).digest('hex');
+
+    console.log(hash);
+    
+    if(hash === req.headers.keys.toLowerCase()){
+      // Respond with the received headers
+      return '';
+    }
+    else{
+      // Respond with the received headers
+      return 'Invalid Header Autherization';
+    }
+    
+}
+
 
 // Export the functions so they can be used in other modules
 module.exports = {
-    validateotp
+    validateotp,validateAdminWithSha256
   };

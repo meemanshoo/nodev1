@@ -9,6 +9,7 @@ const registerSchema = new mongoose.Schema({
     gmail: String,
     phoneNo: String,
     password: String,
+    isActivated: Boolean,
 });
 
 module.exports = mongoose.model('Register',registerSchema);
