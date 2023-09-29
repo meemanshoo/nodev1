@@ -37,10 +37,10 @@ const StoreOtp = require('../../model/storeotp');
 router.delete('/',(req,res,next) => {   
     // delete store otp collection from db.
 
-    if(!req.body.adminUserName){
+    if(req.body.adminUserName == undefined){
         return res.status(300).json({   status:false, message: 'adminUserName must be provided' }); 
     }
-    else if(!req.body.adminPassword){
+    else if(req.body.adminPassword == undefined){
         return res.status(300).json({   status:false, message: 'adminPassword must be provided' }); 
     }
 

@@ -34,7 +34,7 @@ const StoreOtp = require('../model/storeotp');
 router.post('/', (req, res,next) => {
     const gmail  = req.body.gmail;
 
-    if(!req.body.gmail){
+    if(req.body.gmail == undefined){
         return res.status(300).json({   status:false, message: 'gmail must be provided' }); 
     }
 
