@@ -45,7 +45,7 @@ app.use('/api/register',registerRoute);
 app.use('/api/login',loginRoute);
 app.use('/api/sendemailotp',sendemailotpRoute);
 app.use('/api/changepassword',changepasswordRoute);
-app.use('/api/category',categoryRoute);
+app.use('/api',categoryRoute);
 app.use('/api/validateotp',validateOtpRoute);
 app.use('/api/clearstoredotps',clearStoredOtps);
 app.use('/api/users',users);

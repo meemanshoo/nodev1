@@ -19,15 +19,13 @@ const ValidateAdmin = require('../routes/admin/validateadmin');
  */
 
 
-router.get('/',(req,res,next) => {
+router.get('/category',(req,res,next) => {
     Category.find().then(result => {
         res.status(200).json({
             status:true,
             message: "Date get successfully",
             records: result.length,
-            data:[
-                result 
-            ]
+            data:result
         });
     }).catch(err=>{
         res.status(500).json({
@@ -44,12 +42,12 @@ router.get('/',(req,res,next) => {
 
 /**
  * @swagger
- * /api/category:
+ * /api/addCategory:
  *   post:
  *     tags:
  *     - Admin
  *     summary: Add category
- *     description: https://long-boa-sombrero.cyclic.app/api/category
+ *     description: https://long-boa-sombrero.cyclic.app/api/addCategory
  *     requestBody:
  *       required: true
  *       content:
@@ -77,15 +75,15 @@ router.get('/',(req,res,next) => {
  *         description: get all category successful
  */
 
-router.post('/',(req,res,next) => {
+router.post('/addCategory',(req,res,next) => {
 
     const respp = ValidateAdmin.validateAdminWithSha256(req,res);
    
 
-    if (!req.body.categoryImage){
+    if (req.body.categoryImage == undefined){
         return res.status(300).json({   status:false, message: 'categoryImage must be provided' });
     } 
-    else if(!req.body.categoryName){
+    else if(req.body.categoryName == undefined){
         return res.status(300).json({   status:false, message: 'categoryName must be provided' }); 
     }
  
@@ -142,6 +140,110 @@ router.post('/',(req,res,next) => {
           })
       });
         
+
+    } catch (err) {
+        res.status(500).json({
+            status:false,
+            message: 'Something went wrong', 
+            error:err
+        });
+    }
+
+    }
+
+    
+});
+
+
+
+/**
+ * @swagger
+ * /api/deleteCategoryById:
+ *   delete:
+ *     tags:
+ *     - Admin
+ *     summary: Delete category from id
+ *     description: https://long-boa-sombrero.cyclic.app/api/deleteCategoryById
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               categoryId:
+ *                 type: string
+ *                 description: The categoryId of the Category.               
+ *     parameters:
+ *       - in: header
+ *         name: keys
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: string
+ *         description: keys is SHA-256 hash of body parameter of clearstoredotps api
+ *     responses:
+ *       '200':
+ *         description: get all category successful
+ */
+router.delete('/deleteCategoryById',(req,res,next) => {
+
+    const respp = ValidateAdmin.validateAdminWithSha256(req,res);
+   
+
+    if (req.body.categoryId == undefined){
+        return res.status(300).json({   status:false, message: 'categoryId must be provided' });
+    } 
+ 
+
+    else if(typeof req.body.categoryId !== 'string'){
+        return res.status(300).json({   status:false, message: 'categoryId must be string' });
+    }
+
+    const  expectedKeys = ["categoryId"];
+    // Check for extra fields
+    const extraFields = Object.keys(req.body).filter(key => !expectedKeys.includes(key));
+
+
+    if (extraFields.length > 0) {
+        return res.status(300).json({
+            status:false,
+            msg: 'Invalid fields: ' + extraFields.join(', ') 
+        });
+    }
+
+    if(respp){
+        return res.status(300).json({   status:false, message: respp }); 
+    }
+    else{
+ 
+    try{
+       
+        Category.findOneAndDelete({categoryId:req.body.categoryId}).then(
+            result =>{
+            
+                if(result != null){
+                    return res.status(200).json({
+                        status:true,
+                        message: result["categoryName"] + ' Category deleted Successfully from category', 
+                    });
+                }
+                else{
+                  
+                    return res.status(400).json({
+                        status:false,
+                        message: 'Category not found'
+                    });
+                }
+          
+            }
+        ).catch(err => {
+            return res.status(500).json({
+                status:false,
+                message: 'Failed to check categoryId existence', 
+                error:err
+            });
+        });
 
     } catch (err) {
         res.status(500).json({
