@@ -49,22 +49,22 @@ const mongoose = require('mongoose');
 router.post('/',(req,res,next) => {
 
 
-    if (!req.body.firstName){
+    if (req.body.firstName == undefined){
         return res.status(300).json({   status:false, message: 'firstName must be provided' });
     } 
-    else if(!req.body.lastName){
+    else if(req.body.lastName == undefined){
         return res.status(300).json({   status:false, message: 'lastName must be provided' }); 
     }
-    else if(!req.body.userName){
+    else if(req.body.userName == undefined){
         return res.status(300).json({   status:false, message: 'userName must be provided' }); 
     }
-    else if(!req.body.gmail){
+    else if(req.body.gmail == undefined){
         return res.status(300).json({   status:false, message: 'gmail must be provided' }); 
     }
-    else if(!req.body.phoneNo){
+    else if(req.body.phoneNo == undefined){
         return res.status(300).json({   status:false, message: 'phoneNo must be provided' }); 
     }
-    else if(!req.body.password){
+    else if(req.body.password == undefined){
         return res.status(300).json({   status:false, message: 'password must be provided' }); 
     }
 

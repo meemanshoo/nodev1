@@ -82,10 +82,10 @@ router.post('/',(req,res,next) => {
     const respp = ValidateAdmin.validateAdminWithSha256(req,res);
    
 
-    if (!req.body.categoryImage){
+    if (req.body.categoryImage == undefined){
         return res.status(300).json({   status:false, message: 'categoryImage must be provided' });
     } 
-    else if(!req.body.categoryName){
+    else if(req.body.categoryName == undefined){
         return res.status(300).json({   status:false, message: 'categoryName must be provided' }); 
     }
  

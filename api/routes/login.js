@@ -37,10 +37,10 @@ const swaggerUi = require('swagger-ui-express');
 
 router.post('/',(req,res,next) => {
 
-    if(!req.body.userNameOrGmail){
+    if(req.body.userNameOrGmail == undefined){
         return res.status(300).json({   status:false, message: 'userNameOrGmail must be provided' }); 
     }
-    else if(!req.body.password){
+    else if(!req.body.password == undefined){
         return res.status(300).json({   status:false, message: 'password must be provided' }); 
     }
 
@@ -91,7 +91,7 @@ router.post('/',(req,res,next) => {
             else{
                 return res.status(400).json({
                     status:false,
-                    message: 'Login Unsuccessfull. Please password carefully',
+                    message: 'Login Unsuccessfull due to incorrect password',
                 });
             }
            

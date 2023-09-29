@@ -35,10 +35,10 @@ const Register = require('../model/register');
 
 
 router.post('/',(req,res,next) => {   
-    if(!req.body.gmail){
+    if(req.body.gmail == undefined){
         return res.status(300).json({   status:false, message: 'gmail must be provided' }); 
     }
-    else if(!req.body.otp){
+    else if(req.body.otp == undefined){
         return res.status(300).json({   status:false, message: 'otp must be provided' }); 
     }
 

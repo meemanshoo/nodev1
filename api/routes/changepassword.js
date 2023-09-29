@@ -37,10 +37,10 @@ const swaggerUi = require('swagger-ui-express');
 
 router.patch('/',(req,res,next) => {
 
-    if(!req.body.userId){
+    if(req.body.userId == undefined){
         return res.status(300).json({   status:false, message: 'userId must be provided' }); 
     }
-    else if(!req.body.newPassword){
+    else if(req.body.newPassword == undefined){
         return res.status(300).json({   status:false, message: 'newPassword must be provided' }); 
     }
 
