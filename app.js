@@ -11,17 +11,13 @@ const currencyRoute = require('./api/routes/unused/currency');
 
 //user
 const registerRoute = require('./api/routes/register');
-const loginRoute = require('./api/routes/login');
 const sendemailotpRoute = require('./api/routes/sendemailotp');
-const changepasswordRoute = require('./api/routes/changepassword');
 const categoryRoute = require('./api/routes/category');
-const validateOtpRoute = require('./api/routes/validateotp');
+const productRoute = require('./api/routes/product');
 
 
 //admin
-const clearStoredOtps = require('./api/routes/admin/clearstoredotps');
-const users = require('./api/routes/admin/users');
-const changeacticvation = require('./api/routes/admin/changeacticvation');
+
 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -41,15 +37,10 @@ app.use(bodyParser.json());
 
 app.use('/api/student',studentRoute);
 app.use('/api/currency',currencyRoute);
-app.use('/api/register',registerRoute);
-app.use('/api/login',loginRoute);
-app.use('/api/sendemailotp',sendemailotpRoute);
-app.use('/api/changepassword',changepasswordRoute);
+app.use('/api',registerRoute);
+app.use('/api',sendemailotpRoute);
 app.use('/api',categoryRoute);
-app.use('/api/validateotp',validateOtpRoute);
-app.use('/api/clearstoredotps',clearStoredOtps);
-app.use('/api/users',users);
-app.use('/api/changeacticvation',changeacticvation);
+app.use('/api',productRoute);
 
 
 // Define Swagger options

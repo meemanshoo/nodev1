@@ -20,7 +20,7 @@ const ValidateAdmin = require('../routes/admin/validateadmin');
 
 
 router.get('/category',(req,res,next) => {
-    Category.find().then(result => {
+    Category.find({ categoryStatus: true }).then(result => {
         res.status(200).json({
             status:true,
             message: "Date get successfully",
@@ -39,15 +39,75 @@ router.get('/category',(req,res,next) => {
     // });
 });
 
+/**
+ * @swagger
+ * /api/admin/allCategory:
+ *   get:
+ *     tags:
+ *     - Category
+ *     summary: get all category
+ *     parameters:
+ *       - in: header
+ *         name: keys
+ *         required: true
+ *         schema:
+ *           type: string
+ *           format: string
+ *         description: keys is SHA-256 hash of body parameter of clearstoredotps api
+ *     description: https://long-boa-sombrero.cyclic.app/api//admin/allCategory
+ *     responses:
+ *       '200':
+ *         description: get all category successful
+ */
+
+router.get('/admin/allCategory',(req,res,next) => {
+
+    const respp = ValidateAdmin.validateAdminWithSha256(req,res);
+
+    
+    if(respp){
+        return res.status(300).json({   status:false, message: respp }); 
+    }
+    else{
+        try {
+            Category.find().then(result => {
+                res.status(200).json({
+                    status:true,
+                    message: "Date get successfully",
+                    records: result.length,
+                    data:result
+                });
+            }).catch(err=>{
+                res.status(400).json({
+                    status:true,
+                    message: "Fetching category data failed",
+                    error:err
+                });
+            });
+        } catch (error) {
+            res.status(500).json({
+                status:true,
+                message: "Something went wrong",
+                error:error
+            });
+        }
+    }
+
+  
+    // res.status(200).json({
+    //     msg:"this is student get request"
+    // });
+});
+
 
 /**
  * @swagger
- * /api/addCategory:
+ * /api/admin/addCategory:
  *   post:
  *     tags:
- *     - Admin
+ *     - Category
  *     summary: Add category
- *     description: https://long-boa-sombrero.cyclic.app/api/addCategory
+ *     description: https://long-boa-sombrero.cyclic.app/api/admin/addCategory
  *     requestBody:
  *       required: true
  *       content:
@@ -75,7 +135,7 @@ router.get('/category',(req,res,next) => {
  *         description: get all category successful
  */
 
-router.post('/addCategory',(req,res,next) => {
+router.post('/admin/addCategory',(req,res,next) => {
 
     const respp = ValidateAdmin.validateAdminWithSha256(req,res);
    
@@ -120,6 +180,7 @@ router.post('/addCategory',(req,res,next) => {
           categoryId: categoryId,
           categoryImage: req.body.categoryImage,
           categoryName: req.body.categoryName,
+          categoryStatus: true
       });
       
       category.save().then(
@@ -158,12 +219,12 @@ router.post('/addCategory',(req,res,next) => {
 
 /**
  * @swagger
- * /api/deleteCategoryById:
- *   delete:
+ * /api/admin/changeStatusCategory:
+ *   patch:
  *     tags:
- *     - Admin
+ *     - Category
  *     summary: Delete category from id
- *     description: https://long-boa-sombrero.cyclic.app/api/deleteCategoryById
+ *     description: https://long-boa-sombrero.cyclic.app/api/admin/changeStatusCategory
  *     requestBody:
  *       required: true
  *       content:
@@ -186,21 +247,26 @@ router.post('/addCategory',(req,res,next) => {
  *       '200':
  *         description: get all category successful
  */
-router.delete('/deleteCategoryById',(req,res,next) => {
+router.patch('/admin/changeStatusCategory',(req,res,next) => {
 
     const respp = ValidateAdmin.validateAdminWithSha256(req,res);
-   
+
 
     if (req.body.categoryId == undefined){
         return res.status(300).json({   status:false, message: 'categoryId must be provided' });
     } 
- 
+    else if (req.body.categoryStatus == undefined){
+        return res.status(300).json({   status:false, message: 'categoryStatus must be provided' });
+    } 
 
     else if(typeof req.body.categoryId !== 'string'){
         return res.status(300).json({   status:false, message: 'categoryId must be string' });
     }
+    else if(typeof req.body.categoryStatus !== 'string'){
+        return res.status(300).json({   status:false, message: 'categoryStatus must be string' });
+    }
 
-    const  expectedKeys = ["categoryId"];
+    const  expectedKeys = ["categoryId","categoryStatus"];
     // Check for extra fields
     const extraFields = Object.keys(req.body).filter(key => !expectedKeys.includes(key));
 
@@ -217,15 +283,18 @@ router.delete('/deleteCategoryById',(req,res,next) => {
     }
     else{
  
-    try{
-       
-        Category.findOneAndDelete({categoryId:req.body.categoryId}).then(
+    try{    
+        
+        const updateFields = {};
+        updateFields.categoryStatus = req.body.categoryStatus;
+
+        Category.findOneAndUpdate({ categoryId: req.body.categoryId }, { $set: updateFields }, { new: req.body.categoryStatus }).then(
             result =>{
             
                 if(result != null){
                     return res.status(200).json({
                         status:true,
-                        message: result["categoryName"] + ' Category deleted Successfully from category', 
+                        message: "Change Status to " + req.body.categoryStatus + " of category : " + result["categoryName"], 
                     });
                 }
                 else{
