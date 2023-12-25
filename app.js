@@ -14,6 +14,7 @@ const registerRoute = require('./api/routes/register');
 const sendemailotpRoute = require('./api/routes/sendemailotp');
 const categoryRoute = require('./api/routes/category');
 const productRoute = require('./api/routes/product');
+const xtwitterRoute = require('./api/routes/xtwitter');
 
 
 //admin
@@ -41,6 +42,7 @@ app.use('/api',registerRoute);
 app.use('/api',sendemailotpRoute);
 app.use('/api',categoryRoute);
 app.use('/api',productRoute);
+app.use('/api',xtwitterRoute);
 
 
 // Define Swagger options
