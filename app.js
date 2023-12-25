@@ -9,7 +9,7 @@ const app = express();
 const studentRoute = require('./api/routes/unused/student');
 const currencyRoute = require('./api/routes/unused/currency');
 
-//user
+//user route
 const registerRoute = require('./api/routes/register');
 const sendemailotpRoute = require('./api/routes/sendemailotp');
 const categoryRoute = require('./api/routes/category');
