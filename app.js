@@ -1,23 +1,13 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-
+const basicAuth = require('express-basic-auth');
 const app = express();
 
 
-///unused
-const studentRoute = require('./api/routes/unused/student');
-const currencyRoute = require('./api/routes/unused/currency');
+//Master
+const MasterUserRoute = require('./api/routes/master_user');
 
-//user route
-const registerRoute = require('./api/routes/register');
-const sendemailotpRoute = require('./api/routes/sendemailotp');
-const categoryRoute = require('./api/routes/category');
-const productRoute = require('./api/routes/product');
-const xtwitterRoute = require('./api/routes/xtwitter');
-
-
-//admin
 
 
 const mongoose = require('mongoose');
@@ -36,13 +26,20 @@ mongoose.connection.on('connected',connected => {
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-app.use('/api/student',studentRoute);
-app.use('/api/currency',currencyRoute);
-app.use('/api',registerRoute);
-app.use('/api',sendemailotpRoute);
-app.use('/api',categoryRoute);
-app.use('/api',productRoute);
-app.use('/api',xtwitterRoute);
+// Define your users with their username and password
+const users = {
+  'admin': 'supersecret',
+  'meemanshoo': 'meem@123',
+};
+
+// Middleware for basic authentication
+app.use(basicAuth({
+  users: users,
+  challenge: true, // It will prompt users to enter credentials if not provided
+  unauthorizedResponse: 'Unauthorized',
+}));
+
+app.use('/api',MasterUserRoute);
 
 
 // Define Swagger options
