@@ -1,7 +1,7 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-const basicAuth = require('express-basic-auth');
+// const basicAuth = require('express-basic-auth');
 const app = express();
 
 
@@ -27,17 +27,17 @@ app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 // Define your users with their username and password
-const users = {
-  'admin': 'supersecret',
-  'meemanshoo': 'meem@123',
-};
+// const users = {
+//   'admin': 'supersecret',
+//   'meemanshoo': 'meem@123',
+// };
 
 // Middleware for basic authentication
-app.use(basicAuth({
-  users: users,
-  challenge: true, // It will prompt users to enter credentials if not provided
-  unauthorizedResponse: 'Unauthorized',
-}));
+// app.use(basicAuth({
+//   users: users,
+//   challenge: true, // It will prompt users to enter credentials if not provided
+//   unauthorizedResponse: 'Unauthorized',
+// }));
 
 app.use('/api',MasterUserRoute);
 
