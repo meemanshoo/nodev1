@@ -1,12 +1,20 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
+const AppCheck = require('./api/model/app_check');
 // const basicAuth = require('express-basic-auth');
 const app = express();
 
 
 //Master
-const MasterUserRoute = require('./api/routes/master_user');
+const MasterUserRoute = require('./api/routes/master/master_user');
+const MasterUploadRoute = require('./api/routes/master/upload');
+const CloudinaryRoute = require('./api/routes/master/cloudinary');
+const AppCheckRoute = require('./api/routes/master/app_check');
+const ValidateIPRoute = require('./api/routes/master/validate_ip');
+
+//Admin
+const AdminValidateRoute = require('./api/routes/admin/validate');
 
 
 
@@ -23,8 +31,11 @@ mongoose.connection.on('connected',connected => {
     console.log('connection successfull');
 });
 
+
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
+app.use('/api',AppCheckRoute);
+app.use('/api',ValidateIPRoute);
 
 // Define your users with their username and password
 // const users = {
@@ -40,6 +51,9 @@ app.use(bodyParser.json());
 // }));
 
 app.use('/api',MasterUserRoute);
+app.use('/api',AdminValidateRoute);
+app.use('/api',MasterUploadRoute);
+app.use('/api',CloudinaryRoute);
 
 
 // Define Swagger options

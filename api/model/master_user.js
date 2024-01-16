@@ -22,12 +22,10 @@ const masterUserSchema = new mongoose.Schema({
     },
     uploadDate: {
         type: Date,
-        unique: true,
         default: Date.now
     },
     updateDate: {
         type: Date,
-        unique: true,
         default: Date.now
     },
 });
