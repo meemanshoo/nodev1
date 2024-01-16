@@ -9,7 +9,6 @@ const app = express();
 //Master
 const MasterUserRoute = require('./api/routes/master/master_user');
 const MasterUploadRoute = require('./api/routes/master/upload');
-const CloudinaryRoute = require('./api/routes/master/cloudinary');
 const AppCheckRoute = require('./api/routes/master/app_check');
 const ValidateIPRoute = require('./api/routes/master/validate_ip');
 
@@ -53,7 +52,6 @@ app.use('/api',ValidateIPRoute);
 app.use('/api',MasterUserRoute);
 app.use('/api',AdminValidateRoute);
 app.use('/api',MasterUploadRoute);
-app.use('/api',CloudinaryRoute);
 
 
 // Define Swagger options
