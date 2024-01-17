@@ -120,7 +120,11 @@ router.post('/master/validateIP',async  (req,res,next) => {
             if(existingAppCheck.isActivated){
                 // app is allowed by master
 
-                const existingIP = await ValidateIP.findOne({ip: req.body.ip});
+                const existingIP = await ValidateIP.findOneAndUpdate(
+                        {ip: req.body.ip},
+                        { $push: { lastCall: new Date() } },
+                        { new: true }
+                    );
 
 
                 if(existingIP){
@@ -242,8 +246,8 @@ router.post('/master/changeIPStatus',(req,res,next) => {
   
        
     try{
-
-        const message = req.body.message == undefined ? "You are Blocked. Please contact to support team for further details" : req.body.message;
+ 
+        const message = req.body.message == undefined ? req.body.isActivated ? "Validate Ip Successfully" : "You are Blocked. Please contact to support team for further details" : req.body.message;
 
         const updateObject = {
             $set: {
@@ -374,7 +378,7 @@ router.post('/master/deleteAllIps',(req,res,next) => {
               else{
                 res.status(400).json({
                     status: false,
-                    message: 'App not found',
+                    message: 'Ip not found',
                 });
               }
         

@@ -18,6 +18,9 @@ const validateIpSchema = new mongoose.Schema({
         type: String,
         default: "You are Blocked. Please contact to support team for further details"
     },
+    lastCall: {
+        type: [{ type: Date }],
+    },
     uploadDate: {
         type: Date,
         default: Date.now()
