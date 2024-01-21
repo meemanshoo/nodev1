@@ -179,11 +179,6 @@ router.post('/master/validateIP',async  (req,res,next) => {
                 }
 
                 
-                return res.status(200).json({
-                    status:true,
-                    message: "Autherization valid",
-                    id: existingIP._id
-                });
 
             }
             else{
