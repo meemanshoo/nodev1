@@ -127,56 +127,63 @@ router.post('/master/validateIP',async  (req,res,next) => {
                     );
 
 
-                if(existingIP){
-                    if(existingIP.isActivated){
+                // if(existingIP){
+                //     if(existingIP.isActivated){
     
-                        // allow from master
+                //         // allow from master
     
-                        return res.status(200).json({
-                            status:true,
-                            message: "Autherization valid",
-                            id: existingIP._id
-                        });
-                    }
-                    else{
+                //         return res.status(200).json({
+                //             status:true,
+                //             message: "Autherization valid",
+                //             id: existingIP._id
+                //         });
+                //     }
+                //     else{
     
-                        // not allow from master
-                        return res.status(400).json({
-                            status:false,
-                            message: existingIP.message
-                        });
-                    }
+                //         // not allow from master
+                //         return res.status(400).json({
+                //             status:false,
+                //             message: existingIP.message
+                //         });
+                //     }
                    
                     
-                }
-                else{
+                // }
+                // else{
     
                     
-                // save new ip
+                // // save new ip
     
-                const validateIP = new ValidateIP({
-                    ip: req.body.ip,
-                    appCheckId: req.body.appCheckId
-                });
+                // const validateIP = new ValidateIP({
+                //     ip: req.body.ip,
+                //     appCheckId: req.body.appCheckId
+                // });
                 
-                validateIP.save().then(
-                    result =>{
-                    res.status(400).json({
-                        status:false,
-                        message: "New members are not directly allows to use this app. Please contact to support team for further details."
-                    })
-                    }
-                ).catch(err => {
-                    res.status(500).json({
-                        status:false,
-                        message: 'Failed to register master user', 
-                        error: err 
-                    })
+                // validateIP.save().then(
+                //     result =>{
+                //     res.status(400).json({
+                //         status:false,
+                //         message: "New members are not directly allows to use this app. Please contact to support team for further details."
+                //     })
+                //     }
+                // ).catch(err => {
+                //     res.status(500).json({
+                //         status:false,
+                //         message: 'Failed to register master user', 
+                //         error: err 
+                //     })
+                // });
+    
+    
+    
+                // }
+
+                
+                return res.status(200).json({
+                    status:true,
+                    message: "Autherization valid",
+                    id: existingIP._id
                 });
-    
-    
-    
-                }
 
             }
             else{
