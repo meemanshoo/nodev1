@@ -15,16 +15,10 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "dotenv": "^16.3.2",
     "express": "^4.18.2",
-    "express-basic-auth": "^1.2.1",
-    "got": "^11.8.6",
-    "mongodb": "^5.4.0",
     "mongoose": "^7.1.0",
     "multer": "^1.4.5-lts.1",
-    "needle": "^3.3.1",
-    "nodemailer": "^6.9.5",
-    "oauth-1.0a": "^2.2.6",
-    "querystring": "^0.2.1",
     "sharp": "^0.33.2",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0"

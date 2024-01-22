@@ -1,9 +1,14 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-const AppCheck = require('./api/model/app_check');
+
 // const basicAuth = require('express-basic-auth');
 const app = express();
+
+
+
+// Create a WebSocket server by passing the HTTP server as a parameter
+// const wss = new WebSocket.Server({ server });
 
 
 //Master
@@ -19,8 +24,10 @@ const AdminValidateRoute = require('./api/routes/admin/validate');
 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const pwd = process.env.DB_PWD;
+const url = `mongodb+srv://Meemanshoo:${pwd}@cluster0.x44mmbb.mongodb.net/?retryWrites=true&w=majority`;
 
-mongoose.connect('mongodb+srv://Meemanshoo:zysPz6ifrWXETmPV@cluster0.x44mmbb.mongodb.net/?retryWrites=true&w=majority');
+mongoose.connect(url);
 
 mongoose.connection.on('error',err => {
     console.log('connection failed');
@@ -54,6 +61,8 @@ app.use('/api',AdminValidateRoute);
 app.use('/api',MasterUploadRoute);
 
 
+
+
 // Define Swagger options
 const swaggerOptions = {
   definition: {
@@ -80,6 +89,9 @@ app.use((req,res,next) => {
     });
 });
 
+
+
+
 app.use((err, req, res, next) => {
     if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
       return res.status(400).json({  status:false, error: 'Invalid JSON payload' });
@@ -87,10 +99,5 @@ app.use((err, req, res, next) => {
     next(err);
   });
 
-// app.use((req, res, next) => {
-//     res.status(200).json({
-//         message:'Its works!'
-//     });
-// });
 
 module.exports = app;
