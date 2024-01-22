@@ -2,7 +2,7 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
 
-const Game = require('../nodev1/api/model/game');
+// const Game = require('../nodev1/api/model/game');
 const AppCheck = require('../nodev1/api/model/app_check');
 // const basicAuth = require('express-basic-auth');
 const app = express();
@@ -49,9 +49,10 @@ setInterval(async() => {
     console.log(result.isActivated);
     if(result.isActivated){
       //running
-      const game = getRandomGameModel();
+      console.log(result);
+      // const game = getRandomGameModel();
     
-    await game.save();
+    // await game.save();
     }
     else{
         //stop
