@@ -64,16 +64,16 @@ setInterval(async() => {
   console.log("end");
 }, 10000);
 
-function getRandomGameModel() {
-  const game = Game(
-    {
-      color: "Green",
-      number: 1,
-      size: "Big"
-    }
-  );
-  return game;
-}
+// function getRandomGameModel() {
+//   const game = Game(
+//     {
+//       color: "Green",
+//       number: 1,
+//       size: "Big"
+//     }
+//   );
+//   return game;
+// }
 
 
 app.use(bodyParser.urlencoded({extended:false}));
