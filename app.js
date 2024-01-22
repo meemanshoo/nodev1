@@ -24,7 +24,7 @@ const AdminValidateRoute = require('./api/routes/admin/validate');
 
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const pwd = process.env.DB_PWD;
+const pwd = 'zysPz6ifrWXETmPV';
 const url = `mongodb+srv://Meemanshoo:${pwd}@cluster0.x44mmbb.mongodb.net/?retryWrites=true&w=majority`;
 
 mongoose.connect(url);
