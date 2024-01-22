@@ -2,16 +2,9 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
 
-// const Game = require('../nodev1/api/model/game');
 const AppCheck = require('../nodev1/api/model/app_check');
 // const basicAuth = require('express-basic-auth');
 const app = express();
-
-
-
-// Create a WebSocket server by passing the HTTP server as a parameter
-// const wss = new WebSocket.Server({ server });
-
 
 //Master
 const MasterUserRoute = require('./api/routes/master/master_user');
@@ -38,42 +31,6 @@ mongoose.connection.on('error',err => {
 mongoose.connection.on('connected',connected => {
     console.log('connection successfull');
 });
-
-
-
-// Insert data into MongoDB every 20 seconds
-setInterval(async() => {
-  console.log("hit");
-  // await AppCheck.findOne({_id: '65ae41ad7e7f3379734d06c2'})
-  // .then(async result => {
-  //   console.log(result.isActivated);
-  //   if(result.isActivated){
-  //     //running
-  //     console.log(result);
-  //     // const game = getRandomGameModel();
-    
-  //   // await game.save();
-  //   }
-  //   else{
-  //       //stop
-  //   }
-  //   }).catch(err=>{
-  //     console.log(err);
-  // });
-
-  // console.log("end");
-}, 10000);
-
-// function getRandomGameModel() {
-//   const game = Game(
-//     {
-//       color: "Green",
-//       number: 1,
-//       size: "Big"
-//     }
-//   );
-//   return game;
-// }
 
 
 app.use(bodyParser.urlencoded({extended:false}));
