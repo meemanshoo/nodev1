@@ -1,8 +1,6 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
-
-const AppCheck = require('../nodev1/api/model/app_check');
 // const basicAuth = require('express-basic-auth');
 const app = express();
 
