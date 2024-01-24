@@ -118,7 +118,7 @@ router.post('/master/validateIP',async  (req,res,next) => {
             // App is available
 
             if(existingAppCheck.isActivated){
-                // app is allowed by master
+                // app is allowed by master herer
 
                 
 
