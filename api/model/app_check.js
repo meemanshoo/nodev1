@@ -14,6 +14,10 @@ const appCheckSchema = new mongoose.Schema({
         type: String,
         default: "App is currently blocked. Please contact to support team for further details"
     },
+    isActivatedCap: {
+        type: Number,
+        default: 5
+    },
     uploadDate: {
         type: Date,
         default: Date.now()

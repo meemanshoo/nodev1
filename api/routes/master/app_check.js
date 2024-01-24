@@ -212,6 +212,7 @@ router.post('/master/changeAppStatus',(req,res,next) => {
               };
             
         }
+        console.log(updateObject);
         
 
         AppCheck.findOneAndUpdate({ _id: req.body.id }, updateObject, {new: true, })
