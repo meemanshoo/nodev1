@@ -154,7 +154,7 @@ router.post('/master/validateIP',async  (req,res,next) => {
                 else{
     
                     
-                // new ip found
+                // new ip found.
 
                 const cappingLimit = existingAppCheck.isActivatedCap - 1;
 
