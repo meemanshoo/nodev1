@@ -161,17 +161,20 @@ router.post('/master/changeAppStatus',(req,res,next) => {
     else if(typeof req.body.isActivated !== 'boolean'){
         return res.status(300).json({   status:false, message: 'isActivated must be Boolean' });
     }
-    else if(req.body.message != undefined){
+    if(req.body.message != undefined){
         // isActivated use
         if(typeof req.body.message !== 'string'){
             return res.status(300).json({   status:false, message: 'message must be string' });
         }
-        else{
-            query = {isActivated : req.body.isActivated};
+    }
+    if(req.body.isActivatedCap != undefined){
+        // isActivatedcap use
+        if(typeof req.body.isActivatedCap !== 'number'){
+            return res.status(300).json({   status:false, message: 'isActivatedCap must be number' });
         }
     }
 
-    const  expectedKeys = ["id","isActivated","message"];
+    const  expectedKeys = ["id","isActivated","isActivatedCap","message"];
     // Check for extra fields
     const extraFields = Object.keys(req.body).filter(key => !expectedKeys.includes(key));
 
@@ -186,17 +189,29 @@ router.post('/master/changeAppStatus',(req,res,next) => {
   
        
     try{
-
+        let updateObject = {};
         const activationMessage = req.body.isActivated ? 'App is Activated' : 'App is currently blocked. Please contact to support team for further details';
 
         const messageString = req.body.message == undefined ? activationMessage : req.body.message;
-
-        const updateObject = {
-            $set: {
-              isActivated: req.body.isActivated,
-              message: messageString
-            }
-          };
+        if(req.body.isActivatedCap != undefined){
+            updateObject = {
+                $set: {
+                  isActivated: req.body.isActivated,
+                  message: messageString,
+                  isActivatedCap : req.body.isActivatedCap
+                }
+              };
+            
+        }
+        else{
+            updateObject = {
+                $set: {
+                  isActivated: req.body.isActivated,
+                  message: messageString
+                }
+              };
+            
+        }
         
 
         AppCheck.findOneAndUpdate({ _id: req.body.id }, updateObject, {new: true, })

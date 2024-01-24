@@ -120,6 +120,8 @@ router.post('/master/validateIP',async  (req,res,next) => {
             if(existingAppCheck.isActivated){
                 // app is allowed by master
 
+                
+
                 const existingIP = await ValidateIP.findOneAndUpdate(
                         {ip: req.body.ip},
                         { $push: { lastCall: new Date() } },
@@ -152,34 +154,71 @@ router.post('/master/validateIP',async  (req,res,next) => {
                 else{
     
                     
-                // save new ip
-    
-                const validateIP = new ValidateIP({
-                    ip: req.body.ip,
-                    appCheckId: req.body.appCheckId
-                });
-                
-                validateIP.save().then(
-                    result =>{
-                    res.status(400).json({
+                // new ip found
+
+                const cappingLimit = existingAppCheck.isActivatedCap - 1;
+
+                if(cappingLimit <= 0){
+                    return res.status(400).json({
                         status:false,
-                        message: "New members are not directly allows to use this app. Please contact to support team for further details."
-                    })
+                        message: "New members are restricted to use this app. Please contact to support team for further details."
+                    });
+                }
+
+                await ValidateIP.find({isActivated : false})
+                .sort({uploadDate : 1}).then(
+                    async  result  =>{
+
+                        if(result.length > cappingLimit){
+                            // delete first ip
+        
+                            const ipId = result[0]._id;
+
+                            await ValidateIP.findOneAndDelete({_id : ipId}).catch(err => {
+                                res.status(500).json({
+                                    status:false,
+                                    message: 'Failed to delete IP', 
+                                    error: err 
+                                })
+                            });
+            
+                        }
+            
+                        const validateIP = new ValidateIP({
+                            ip: req.body.ip,
+                            appCheckId: req.body.appCheckId
+                        });
+                        
+                       
+                        
+                        
+                        validateIP.save().then(
+                            result =>{
+                            res.status(400).json({
+                                status:false,
+                                message: "New members are not directly allows to use this app. Please contact to support team for further details."
+                            })
+                            }
+                        ).catch(err => {
+                            res.status(500).json({
+                                status:false,
+                                message: 'Failed to register master user', 
+                                error: err 
+                            })
+                        });
                     }
-                ).catch(err => {
+                )
+                .catch(err => {
                     res.status(500).json({
                         status:false,
-                        message: 'Failed to register master user', 
+                        message: 'Failed to get IP', 
                         error: err 
                     })
                 });
     
-    
-    
                 }
 
-                
-
+            
             }
             else{
                 // app is not allowed by master
@@ -232,6 +271,7 @@ router.post('/master/changeIPStatus',(req,res,next) => {
             return res.status(300).json({   status:false, message: 'message must be string' });
         }
     }
+
 
     const  expectedKeys = ["ipId","isActivated","appId","message"];
     // Check for extra fields
